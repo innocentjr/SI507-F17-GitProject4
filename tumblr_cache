@@ -1,0 +1,22 @@
+import sample_oauth1_code
+#comment
+
+r = oauth.get("https://www.tumblr.com/docs/en/api/v2")
+res = r.json()
+
+# cache the data we got back from the request
+f = open('nested.txt', 'w')
+f.write(json.dumps(res))
+f.close()
+
+# do some investigation with the cached data
+fileref = open("nested.txt","r")
+file_str = fileref.read()
+twitter_data = json.loads(file_str)
+print(type(twitter_data)) # dictionary!
+
+# remember the pattern for investigating nested data
+print(list(twitter_data.keys())) # [u'search_metadata', u'statuses']
+# one of those looks interesting
+print(type(twitter_data["statuses"])) # print the type of that key's value
+print(twitter_data["statuses"][0]) # it's a list, so print the first element

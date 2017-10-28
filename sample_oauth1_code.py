@@ -1,5 +1,5 @@
-# OAuth1 Code to access data from the Twitter API...
-# here is my comment for person A task 2
+# Just editted the comment on line 1.
+# this is Person A's comment
 import requests_oauthlib
 import webbrowser
 import json
@@ -219,113 +219,6 @@ fr = open("paging_nested.txt","w")
 fr.write(json.dumps(collected_tweets))
 fr.close()
 
+# Now, can investigate using this data that you got.
+# If you're testing with the data in the file only, you may want to comment out all the code above this for a while so you don't inadvertently make a lot of requests to Twitter and then run out of request privileges for the day!
 
-
-
-
-
-
-#the below is code I wrote for SI 506
-
-f = open('sample_diction.json', 'r')
-fr = f.read()
-sample_photo_rep = {}
-sample_photo_rep = json.loads(fr)
-f.close()
-#print sample_photo_rep
-
-FLICKR_KEY = '02b66d7b7d4d459086ce04d6a71b27dd'
-
-
-l = len(sample_photo_rep['photo']['tags']['tag'])
-c = 0
-sample_tags_list = []
-while c < l:
-    sample_tags_list.append(sample_photo_rep['photo']['tags']['tag'][c]['_content'])
-    c += 1
-
-
-f = open('sample_flickr_response.json', 'r')
-fr = f.read()
-search_result_diction = json.loads(fr)
-f.close()
-
-l = len(search_result_diction['photos']['photo'])
-c = 0
-sample_photo_ids = []
-while c < l:
-    sample_photo_ids.append(search_result_diction['photos']['photo'][c]['id'])
-    c += 1
-
-
-CACHE_FNAME = "pset7_cached_data.json" # PROVIDED FOR YOU, DO NOT CHANGE
-
-try:
-    f2 = open('cpset7_cached_data.json', 'r')
-    f2r = f2.read()
-    CACHE_DICTION = pickle.load(f2r)
-    f2.close()
-except:
-    CACHE_DICTION = {}
-
-
-
-def params_unique_combination(baseurl, params_d, private_keys=["api_key"]):
-    alphabetized_keys = sorted(params_d.keys())
-    res = []
-    for k in alphabetized_keys:
-        if k not in private_keys:
-            res.append("{}-{}".format(k, params_d[k]))
-    return baseurl + "_".join(res)
-
-
-
-
-def get_flickr_data(tag, n=50):
-    try:
-        cache_file = "pset7_cached_data.json"
-        f2 = open(cache_file,"r")
-#        print "Successfully Opened File"
-        f2r = f2.read()
-#        print "Successfully Read File"
-        f2.close()
-        cache_diction = json.loads(f2r)
-#        print "Successfully Loaded File"
-
-    except:
-        cache_diction = {}
-#        print "Failed to Open File"
-
-    baseurl = "https://api.flickr.com/services/rest/"
-    params_diction = {}
-    params_diction["format"] = "json"
-    params_diction['method'] = 'flickr.photos.search'
-    params_diction['api_key'] = '02b66d7b7d4d459086ce04d6a71b27dd'
-    params_diction['tags'] = tag
-    params_diction['tag_mode'] = 'all'
-    params_diction['per_page'] = n
-#    params_diction['page'] = 1
-
-    unique_ident = params_unique_combination(baseurl,params_diction)
-    if unique_ident in cache_diction:
-        print "Getting the data locally..."
-        flickr_data =  cache_diction[unique_ident]
-    else:
-        print "Getting data from the net, tagged with", unique_ident
-        response = requests.get(baseurl, params= params_diction)
-        response_text = response.text
-
-        parsed_response = json.loads(response_text[14:-1])
-        flickr_data = parsed_response
-
-        cache_diction[unique_ident] = flickr_data
-        f3 = open(cache_file,"w")
-        temp_cache = json.dumps(cache_diction)
-        f3.write(temp_cache)
-        f3.close()
-
-    return flickr_data
-
-
-
-flickr_mountains_result = get_flickr_data("mountains")
