@@ -1,5 +1,5 @@
-# OAuth1 Code to access data from the Twitter API...
-#This is my comment
+# Just editted the comment on line 1.
+# this is Person A's comment
 import requests_oauthlib
 import webbrowser
 import json
@@ -221,3 +221,5 @@ fr.close()
 
 # Now, can investigate using this data that you got.
 # If you're testing with the data in the file only, you may want to comment out all the code above this for a while so you don't inadvertently make a lot of requests to Twitter and then run out of request privileges for the day!
+
+>>>>>>> upstream/master

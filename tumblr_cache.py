@@ -1,5 +1,6 @@
 import sample_oauth1_code
-
+#comment
+>>>>>>> upstream/master
 
 r = oauth.get("https://www.tumblr.com/docs/en/api/v2")
 res = r.json()
